@@ -6,6 +6,9 @@ from botocore.config import Config
 import json
 import zlib
 import base64
+import numpy as np
+from io import BytesIO
+import time
 
 def main():
     config = Config(region_name='us-east-2')
@@ -27,13 +30,12 @@ def main():
             break
         
         #cv2.imshow("Output", frame)
-        capture.set(cv2.CAP_PROP_POS_FRAMES, capture.get(cv2.CAP_PROP_POS_FRAMES) + 30)
+        capture.set(cv2.CAP_PROP_POS_FRAMES, capture.get(cv2.CAP_PROP_POS_FRAMES) + 150)
             
-        response = client.invoke(
-            FunctionName='rek-image-buffer',
-            Payload=frame
-        )
-        print(response)
+        with open('test.png', 'rb') as data:
+            client.upload_fileobj(data, 'rek-image-buffer', (time.asctime(time.localtime(time.time())) + ".PNG").replace(" ", "").replace(":", ""))
+
+        print('Image sent!')
         sleep(5)
 
         
