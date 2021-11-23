@@ -11,7 +11,7 @@ def main():
     config = Config(region_name='us-east-2')
     
     client = boto3.client(
-        'lambda',
+        's3',
         config=config
     )
     
@@ -30,8 +30,8 @@ def main():
         capture.set(cv2.CAP_PROP_POS_FRAMES, capture.get(cv2.CAP_PROP_POS_FRAMES) + 30)
             
         response = client.invoke(
-            FunctionName='Test-detect',
-            Payload=json.dumps(base64.b64encode(zlib.compress(frame.tobytes())).decode('utf-8'))
+            FunctionName='rek-image-buffer',
+            Payload=frame
         )
         print(response)
         sleep(5)
