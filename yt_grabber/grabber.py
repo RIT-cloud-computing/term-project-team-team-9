@@ -13,10 +13,8 @@ import time
 def main():
     config = Config(region_name='us-east-2')
     
-    client = boto3.client(
-        's3',
-        config=config
-    )
+    client = boto3.resource('s3')
+    buffer = client.Bucket('rek-image-buffer')
     
     url = "https://youtu.be/RQA5RcIZlAM"
     video = pafy.new(url)
@@ -33,7 +31,7 @@ def main():
         capture.set(cv2.CAP_PROP_POS_FRAMES, capture.get(cv2.CAP_PROP_POS_FRAMES) + 150)
             
         with open('test.png', 'rb') as data:
-            client.upload_fileobj(data, 'rek-image-buffer', (time.asctime(time.localtime(time.time())) + ".PNG").replace(" ", "").replace(":", ""))
+            buffer.put_object(Body=data, Key=(time.asctime(time.localtime(time.time())) + ".PNG").replace(" ", "").replace(":", ""), ContentType='image/png')
 
         print('Image sent!')
         sleep(5)
