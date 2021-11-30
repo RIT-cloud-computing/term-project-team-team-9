@@ -27,7 +27,14 @@ resource "aws_instance" "video_stream_ec2" {
 module "s3_bucket" {
   source = "terraform-aws-modules/s3-bucket/aws"
 
-  bucket = "jaywalker-s3-bucket"
+  bucket = "jaywalker-final-s3"
+  acl    = "private"
+}
+
+module "s3_bucket" {
+  source = "terraform-aws-modules/s3-bucket/aws"
+
+  bucket = "jaywalker-temp-s3"
   acl    = "private"
 }
 
@@ -35,26 +42,21 @@ resource "aws_sns_topic" "sns_emails" {
   name = "sns-notif"
 }
 
-module "db" {
-  source  = "terraform-aws-modules/rds/aws"
-  version = "~> 3.0"
+resource "aws_dynamodb_table" "basic-dynamodb-table" {
+  name           = "GameScores"
+  billing_mode   = "PROVISIONED"
+  read_capacity  = 1
+  write_capacity = 1
+  hash_key       = "Image"
+  range_key      = "Date"
 
-  identifier = "offending-db"
+  attribute {
+    name = "Image"
+    type = "S"
+  }
 
-  engine            = "mysql"
-  engine_version    = "8.0.23"
-  instance_class    = "db.t2.micro"
-  allocated_storage = 20
-
-  name     = "offending-db"
-  username = "admin"
-  password = "YourPwdShouldBeLongAndSecure!"
-  port     = "3306"
-
-  # DB subnet group
-  subnet_ids = []
-
-  # Database Deletion Protection
-  deletion_protection = true
-
+  attribute {
+    name = "Date"
+    type = "S"
+  }
 }
