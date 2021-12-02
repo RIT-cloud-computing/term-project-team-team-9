@@ -76,13 +76,21 @@ class CdkStack(cdk.Stack):
         statement = iam.PolicyStatement()
         statement.add_actions("rekognition:DetectLabels")
         statement.add_resources("*")
+        detect_lambda.add_to_role_policy(statement)
+
+        statement = iam.PolicyStatement()
         statement.add_actions("s3:*")
         statement.add_resources("*")
+        detect_lambda.add_to_role_policy(statement)
+
+        statement = iam.PolicyStatement()
         statement.add_actions("dynamodb:*")
         statement.add_resources("*")
+        detect_lambda.add_to_role_policy(statement)
+
+        statement = iam.PolicyStatement()
         statement.add_actions("lambda:*")
         statement.add_resources("*")
-
         detect_lambda.add_to_role_policy(statement)
 
         # create trigger for Lambda function with image type suffixes
