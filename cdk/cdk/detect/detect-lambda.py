@@ -3,7 +3,7 @@ import boto3
 import time;
 
 def lambda_handler(event, context):
-    imageTime = time.asctime(time.localtime(time.time()))
+    imageTime = time.time()
     
     #
     originS3 = event["Records"][0]["s3"]["bucket"]["name"]
@@ -55,7 +55,10 @@ def lambda_handler(event, context):
         s3.meta.client.copy(copy_source, 'rek-image-detect', originKey)
         
         s3client = boto3.client('s3')
-        url = s3client.generate_presigned_url('get_object', Params={'Bucket': 'rek-image-detect', 'Key': originKey}, ExpiresIn=21600) 
+        my_session = boto3.session.Session()
+        my_region = my_session.region_name
+    
+        url = "https://rek-image-detect.s3.{}.amazonaws.com/{}".format(my_region, originKey)
     
         # Save to database (requires DB/intergration)
         
@@ -77,7 +80,10 @@ def lambda_handler(event, context):
         db.put_item(
             TableName='jaywalker',
             Item={
-                "Date": {
+                "submit": {
+                    "S": "OK"
+                },
+                "epochtime": {
                     "S": str(imageTime),
                 },
                 "Image": {
