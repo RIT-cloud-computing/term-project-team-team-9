@@ -44,7 +44,7 @@ class CdkStack(cdk.Stack):
         # create Sns Topic
         sns_topic = sns.Topic(self, "sns-notif")
         email_address = cdk.CfnParameter(self, "email-param")
-        sns_topic.add_subscription(subscriptions.UrlSubscription("https://foobar.com/"))
+        sns_topic.add_subscription(subscriptions.EmailSubscription(email_address.value_as_string))
 
         # create Lambda function
         sns_lambda = _lambda.Function(
