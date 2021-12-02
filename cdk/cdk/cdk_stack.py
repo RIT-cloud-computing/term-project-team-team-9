@@ -50,7 +50,7 @@ class CdkStack(cdk.Stack):
         sns_lambda = _lambda.Function(
             self, 'sns-lambda',
             runtime = _lambda.Runtime.PYTHON_3_9,
-            handler = 'sns-lambda.handler',
+            handler = 'sns-lambda.lambda_handler',
             code = _lambda.Code.from_asset('cdk/sns')
         )
 
@@ -58,7 +58,7 @@ class CdkStack(cdk.Stack):
         detect_lambda = _lambda.Function(
             self, 'Test-detect',
             runtime = _lambda.Runtime.PYTHON_3_9,
-            handler = 'test-detect.handler',
+            handler = 'test-detect.lambda_handler',
             code = _lambda.Code.from_asset('cdk/detect')
         )
 
