@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<head>
+    <title>JayStalkers</title>
+    <script>
+        window.onload = function (){
+            let jsonData;
+            newRequest().then((data) => {
+                for(i = 0; i < data.length; i++) {
+                    let currData = data[i]
+                    document.getElementById(i.toString()).src=currData.url;
+                    document.getElementById(i.toString() + "stats").innerHTML = ("Walkers: " + currData.walkers + 
+                    "\tJaywalkers: " + currData.jaywalkers);
+                }
+            })
+    }
+    function newRequest() { 
+        return fetch('{APIEndPoint}')
+        .then((response) => {
+            return response.json().then((data) => {
+                console.log(data);
+                return data;
+            }).catch((err) => {
+                console.log(err);
+            })
+        });
+    }
+    </script>
+    <style>
+        html * {
+            font-family: Open-Sans, sans-serif;
+        }
+
+        img {
+            width: 33%;
+        }
+
+        .imgBlock {
+            display: inline-block;
+        }
+    </style>
+</head>
+<body>
+    <h1>JayStalkers</h1>
+    <h2>Recent Jaywalkers</h2>
+    <button onClick="window.location.reload();">Refresh Page</button>
+    <div  class="imgBlock">
+        <h3 id="0stats"></h3>
+        <img id="0" src="..">
+    </div>
+    <div  class="imgBlock">
+        <h3 id="1stats"></h3>
+        <img id="1" src="..">
+    </div>
+    <div  class="imgBlock">
+        <h3 id="2stats"></h3>
+        <img id="2" src="..">
+    </div>
+    <div  class="imgBlock">    
+        <h3 id="3stats"></h3>
+        <img id="3" src="..">
+    </div>    
+    <div class="imgBlock">    
+        <h3 id="4stats"></h3>
+        <img id="4" src="..">
+    </div>
+</body>
