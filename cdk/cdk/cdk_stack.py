@@ -42,6 +42,10 @@ class CdkStack(cdk.Stack):
         )
 
         # create Sns Topic
+        # npx cdk deploy my-stack-name    \
+        #    --parameters myFirstParameter=value1 \
+        #    --parameters mySecondParameter=value=2
+
         sns_topic = sns.Topic(self, "sns-notif")
         email_address = cdk.CfnParameter(self, "email-param")
         sns_topic.add_subscription(subscriptions.EmailSubscription(email_address.value_as_string))
@@ -62,18 +66,31 @@ class CdkStack(cdk.Stack):
             code = _lambda.Code.from_asset('cdk/detect')
         )
 
-        # add Rekognition permissions for Lambda function
+        # add permissions for SNS Lambda function
+        statement = iam.PolicyStatement()
+        statement.add_actions("sns:*")
+        statement.add_resources("*")
+        detect_lambda.add_to_role_policy(statement)
+
+        # add permissions for Detect Lambda function
         statement = iam.PolicyStatement()
         statement.add_actions("rekognition:DetectLabels")
         statement.add_resources("*")
+        statement.add_actions("s3:*")
+        statement.add_resources("*")
+        statement.add_actions("dynamodb:*")
+        statement.add_resources("*")
+        statement.add_actions("lambda:*")
+        statement.add_resources("*")
+
         detect_lambda.add_to_role_policy(statement)
 
         # create trigger for Lambda function with image type suffixes
         notification = s3_notifications.LambdaDestination(detect_lambda)
-        notification.bind(self, bucket)
-        bucket.add_object_created_notification(notification, s3.NotificationKeyFilter(suffix='.png'))
+        notification.bind(self, temp_bucket)
+        temp_bucket.add_object_created_notification(notification, s3.NotificationKeyFilter(suffix='.png'))
 
         # grant permissions for lambda to read/write to DynamoDB table and bucket
-        table.grant_read_write_data(detect_lambda)
-        bucket.grant_read_write(detect_lambda)
+        # table.grant_read_write_data(detect_lambda)
+        # bucket.grant_read_write(detect_lambda)
 
