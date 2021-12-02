@@ -1,2 +1,9 @@
 aws-cdk.core>=1.134.0
 aws-cdk.assertions>=1.134.0
+aws_cdk.aws_iam
+aws_cdk.aws_lambda
+aws_cdk.aws_s3
+aws_cdk.aws_dynamodb
+aws_cdk.aws_s3_notifications
+aws_cdk.aws_sns
+aws_cdk.aws_sns_subscriptions
