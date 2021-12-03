@@ -4,7 +4,7 @@ import json
 def lambda_handler(event, context):
 	client = boto3.client('dynamodb')
 	resp = client.query(
-		TableName='jaywalker',
+		TableName=os.environ["DY_TABLE"],
 		ProjectionExpression="Image,Jaywalkers,Walkers",
 		Limit=5,
 		KeyConditionExpression='submit=:val',

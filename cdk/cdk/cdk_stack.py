@@ -35,6 +35,13 @@ class CdkStack(cdk.Stack):
         bucket = s3.Bucket(self, 'rek-image-detect')
         bucket.grant_read_write(user)
 
+        # create DynamoDB table to hold Rekognition results
+        table = ddb.Table(
+            self, 'jaywalker',
+            partition_key={'name': 'Submit', 'type': ddb.AttributeType.STRING},
+            sort_key={'name': 'epochtime', 'type': ddb.AttributeType.STRING}
+        )
+
         # create API gateway
         api = apigateway.RestApi(self, 'get-image-api',
             default_cors_preflight_options=apigateway.CorsOptions(
@@ -49,18 +56,14 @@ class CdkStack(cdk.Stack):
             self, 'get-image',
             runtime = _lambda.Runtime.PYTHON_3_9,
             handler = 'get-image.lambda_handler',
-            code = _lambda.Code.from_asset('cdk/get-image')
+            code = _lambda.Code.from_asset('cdk/get-image'),
+            environment = {
+                DY_TABLE: table.tableName
+            }
         )
 
         resource = api.root.add_resource("get-resource")
         resource.add_method("GET", apigateway.LambdaIntegration(image_lambda, proxy=False))
-
-        # create DynamoDB table to hold Rekognition results
-        table = ddb.Table(
-            self, 'jaywalker',
-            partition_key={'name': 'Submit', 'type': ddb.AttributeType.STRING},
-            sort_key={'name': 'epochtime', 'type': ddb.AttributeType.STRING}
-        )
 
         # create Sns Topic
         # npx cdk deploy my-stack-name    \
