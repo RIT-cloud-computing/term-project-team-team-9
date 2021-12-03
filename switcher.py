@@ -13,7 +13,7 @@ def main():
     
     with fileinput.FileInput("./index.html", inplace=True, backup='.bak') as file:
         for line in file:
-            print(line.replace("{APIEndPoint}", endpoint), end='')
+            print(line.replace("APIEndPoint", endpoint), end='')
     
     with fileinput.FileInput("./yt_grabber/grabber.py", inplace=True, backup='.bak') as file:
         for line in file:
