@@ -35,6 +35,10 @@ class CdkStack(cdk.Stack):
         bucket = s3.Bucket(self, 'rek-image-detect')
         bucket.grant_read_write(user)
 
+        # HTML bucket
+        html_bucket = s3.Bucket(self, 'html-bucket')
+        html_bucket.grant_read_write(user)
+
         # create DynamoDB table to hold Rekognition results
         table = ddb.Table(
             self, 'jaywalker',
@@ -61,6 +65,11 @@ class CdkStack(cdk.Stack):
                 DY_TABLE: table.tableName
             }
         )
+
+        statement = iam.PolicyStatement()
+        statement.add_actions("s3:*")
+        statement.add_resources("*")
+        image_lambda.add_to_role_policy(statement)
 
         resource = api.root.add_resource("get-resource")
         resource.add_method("GET", apigateway.LambdaIntegration(image_lambda, proxy=False))
@@ -133,4 +142,6 @@ class CdkStack(cdk.Stack):
         # grant permissions for lambda to read/write to DynamoDB table and bucket
         # table.grant_read_write_data(detect_lambda)
         # bucket.grant_read_write(detect_lambda)
-
+        CfnOutput(self, "BufferBucket", value=temp_bucket.bucketName)
+        CfnOutput(self, "HTMLBucket", value=html_bucket.bucketName)
+        CfnOutput(self, "API", value=api.url)
