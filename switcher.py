@@ -20,7 +20,8 @@ def main():
             print(line.replace('rek-image-buffer', buffer_bucket), end='')
 
     s3 = boto3.resource('s3')
-    s3.meta.client.put_object('./index.html', site_bucket, 'index.html', ContentType='text/html')
+    bucket = s3.Bucket(site_bucket)
+    bucket.put_object(Body='./index.html', Key='index.html', ContentType='text/html')
 
 
 if __name__ == "__main__":
