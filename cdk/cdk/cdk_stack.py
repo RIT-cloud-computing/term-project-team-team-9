@@ -137,7 +137,7 @@ class CdkStack(cdk.Stack):
         # create trigger for Lambda function with image type suffixes
         notification = s3_notifications.LambdaDestination(detect_lambda)
         notification.bind(self, temp_bucket)
-        temp_bucket.add_object_created_notification(notification, s3.NotificationKeyFilter(suffix='.png'))
+        temp_bucket.add_object_created_notification(notification, s3.NotificationKeyFilter(suffix='.PNG'))
 
         # grant permissions for lambda to read/write to DynamoDB table and bucket
         # table.grant_read_write_data(detect_lambda)
