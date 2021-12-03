@@ -1,6 +1,6 @@
 #!/bin/bash
 yum update -y
-yum install git
+yum install git -y
 
 #pull from github
 git clone https://github.com/RIT-cloud-computing/term-project-team-team-9.git
