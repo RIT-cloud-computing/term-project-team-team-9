@@ -62,7 +62,7 @@ class CdkStack(cdk.Stack):
             handler = 'get-image.lambda_handler',
             code = _lambda.Code.from_asset('cdk/get-image'),
             environment = {
-                "DY_TABLE": table.tableName
+                "DY_TABLE": table.table_name
             }
         )
 
@@ -90,7 +90,7 @@ class CdkStack(cdk.Stack):
             handler = 'sns-lambda.lambda_handler',
             code = _lambda.Code.from_asset('cdk/sns'),
             environment = {
-                "SNS_TOPIC": sns_topic.topicArn
+                "SNS_TOPIC": sns_topic.topic_arn
             }
         )
 
@@ -101,9 +101,9 @@ class CdkStack(cdk.Stack):
             handler = 'test-detect.lambda_handler',
             code = _lambda.Code.from_asset('cdk/detect'),
             environment = {
-                "DETECT_BUCKET": bucket.bucketName,
-                "DY_TABLE": table.tableName,
-                "SNS_LAMBDA": sns_lambda.functionArn
+                "DETECT_BUCKET": bucket.bucket_name,
+                "DY_TABLE": table.table_name,
+                "SNS_LAMBDA": sns_lambda.function_arn
             }
         )
 
@@ -142,6 +142,6 @@ class CdkStack(cdk.Stack):
         # grant permissions for lambda to read/write to DynamoDB table and bucket
         # table.grant_read_write_data(detect_lambda)
         # bucket.grant_read_write(detect_lambda)
-        cdk.CfnOutput(self, "BufferBucket", value=temp_bucket.bucketName)
-        cdk.CfnOutput(self, "HTMLBucket", value=html_bucket.bucketName)
+        cdk.CfnOutput(self, "BufferBucket", value=temp_bucket.bucket_name)
+        cdk.CfnOutput(self, "HTMLBucket", value=html_bucket.bucket_name)
         cdk.CfnOutput(self, "API", value=api.url)
