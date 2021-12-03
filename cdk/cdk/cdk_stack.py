@@ -142,6 +142,6 @@ class CdkStack(cdk.Stack):
         # grant permissions for lambda to read/write to DynamoDB table and bucket
         # table.grant_read_write_data(detect_lambda)
         # bucket.grant_read_write(detect_lambda)
-        CfnOutput(self, "BufferBucket", value=temp_bucket.bucketName)
-        CfnOutput(self, "HTMLBucket", value=html_bucket.bucketName)
-        CfnOutput(self, "API", value=api.url)
+        cdk.CfnOutput(self, "BufferBucket", value=temp_bucket.bucketName)
+        cdk.CfnOutput(self, "HTMLBucket", value=html_bucket.bucketName)
+        cdk.CfnOutput(self, "API", value=api.url)
