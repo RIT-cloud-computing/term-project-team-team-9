@@ -3,7 +3,7 @@ import fileinput
 import json
 
 def main():
-    cdkOutput = open("/cdk/cdk-outputs.json")
+    cdkOutput = open("./cdk/cdk-outputs.json")
 
     cdkVars = json.load(cdkOutput)
 
