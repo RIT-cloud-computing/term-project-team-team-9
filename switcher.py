@@ -7,9 +7,9 @@ def main():
 
     cdkVars = json.load(cdkOutput)
 
-    buffer_bucket = cdkVars["BufferBucket"]
-    site_bucket = cdkVars["names"]["HTMLBucket"]
-    endpoint = cdkVars["names"]["API"]
+    buffer_bucket = cdkVars["CdkStack"]["BufferBucket"]
+    site_bucket = cdkVars["CdkStack"]["HTMLBucket"]
+    endpoint = cdkVars["CdkStack"]["API"]
     
     with fileinput.FileInput("./index.html", inplace=True, backup='.bak') as file:
         for line in file:
