@@ -79,7 +79,10 @@ class CdkStack(cdk.Stack):
             self, 'sns-lambda',
             runtime = _lambda.Runtime.PYTHON_3_9,
             handler = 'sns-lambda.lambda_handler',
-            code = _lambda.Code.from_asset('cdk/sns')
+            code = _lambda.Code.from_asset('cdk/sns'),
+            environment = {
+                SNS_TOPIC: sns_topic.topicArn
+            }
         )
 
         # create Lambda function

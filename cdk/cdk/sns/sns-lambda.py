@@ -16,7 +16,7 @@ def lambda_handler(event, context):
     print(message)
     client = boto3.client('sns')
     response = client.publish(
-        TargetArn="arn:aws:sns:us-east-2:344385510112:sns-notif",
+        TargetArn=os.environ["SNS_TOPIC"],
         # Message=json.dumps({'default': json.dumps(message)}),
         Message=message,
         MessageStructure='String'
