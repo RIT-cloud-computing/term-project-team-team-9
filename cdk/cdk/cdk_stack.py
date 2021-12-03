@@ -36,7 +36,7 @@ class CdkStack(cdk.Stack):
         bucket.grant_read_write(user)
 
         # HTML bucket
-        html_bucket = s3.Bucket(self, 'html-bucket')
+        html_bucket = s3.Bucket(self, 'html-bucket', website_index_document="index.html", public_read_access=True)
         html_bucket.grant_read_write(user)
 
         # create DynamoDB table to hold Rekognition results
@@ -106,12 +106,23 @@ class CdkStack(cdk.Stack):
                 "SNS_LAMBDA": sns_lambda.function_arn
             }
         )
+        
+        statement = iam.PolicyStatement()
+        statement.add_actions("dynamodb:*")
+        statement.add_resources("*")
+        image_lambda.add_to_role_policy(statement)
+
+        # add permissions for dynamo Lambda function
+        statement = iam.PolicyStatement()
+        statement.add_actions("dynamodb:*")
+        statement.add_resources("*")
+        image_lambda.add_to_role_policy(statement)
 
         # add permissions for SNS Lambda function
         statement = iam.PolicyStatement()
         statement.add_actions("sns:*")
         statement.add_resources("*")
-        detect_lambda.add_to_role_policy(statement)
+        sns_lambda.add_to_role_policy(statement)
 
         # add permissions for Detect Lambda function
         statement = iam.PolicyStatement()
