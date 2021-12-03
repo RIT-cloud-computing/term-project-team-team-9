@@ -62,7 +62,7 @@ class CdkStack(cdk.Stack):
             handler = 'get-image.lambda_handler',
             code = _lambda.Code.from_asset('cdk/get-image'),
             environment = {
-                DY_TABLE: table.tableName
+                "DY_TABLE": table.tableName
             }
         )
 
@@ -90,7 +90,7 @@ class CdkStack(cdk.Stack):
             handler = 'sns-lambda.lambda_handler',
             code = _lambda.Code.from_asset('cdk/sns'),
             environment = {
-                SNS_TOPIC: sns_topic.topicArn
+                "SNS_TOPIC": sns_topic.topicArn
             }
         )
 
@@ -101,9 +101,9 @@ class CdkStack(cdk.Stack):
             handler = 'test-detect.lambda_handler',
             code = _lambda.Code.from_asset('cdk/detect'),
             environment = {
-                DETECT_BUCKET: bucket.bucketName,
-                DY_TABLE: table.tableName,
-                SNS_LAMBDA: sns_lambda.functionArn
+                "DETECT_BUCKET": bucket.bucketName,
+                "DY_TABLE": table.tableName,
+                "SNS_LAMBDA": sns_lambda.functionArn
             }
         )
 
