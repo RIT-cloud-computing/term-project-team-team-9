@@ -6,7 +6,8 @@ from aws_cdk import (
     aws_dynamodb as ddb,
     aws_s3_notifications as s3_notifications,
     aws_sns as sns,
-    aws_sns_subscriptions as subscriptions
+    aws_sns_subscriptions as subscriptions,
+    aws_apigateway as apigateway
 )
 
 
@@ -34,11 +35,31 @@ class CdkStack(cdk.Stack):
         bucket = s3.Bucket(self, 'rek-image-detect')
         bucket.grant_read_write(user)
 
+        # create API gateway
+        api = apigateway.RestApi(self, 'get-image-api',
+            default_cors_preflight_options=apigateway.CorsOptions(
+                allow_origins=apigateway.Cors.ALL_ORIGINS,
+                allow_methods=["GET"]
+            )
+        )
+        url = api.url + "/default/get-resource"
+
+        # create Lambda function for frontend
+        image_lambda = _lambda.Function(
+            self, 'get-image',
+            runtime = _lambda.Runtime.PYTHON_3_9,
+            handler = 'get-image.lambda_handler',
+            code = _lambda.Code.from_asset('cdk/get-image')
+        )
+
+        resource = api.root.add_resource("get-resource")
+        resource.add_method("GET", apigateway.LambdaIntegration(image_lambda, proxy=False))
+
         # create DynamoDB table to hold Rekognition results
         table = ddb.Table(
             self, 'jaywalker',
-            partition_key={'name': 'Image', 'type': ddb.AttributeType.STRING},
-            sort_key={'name': 'Date', 'type': ddb.AttributeType.STRING}
+            partition_key={'name': 'Submit', 'type': ddb.AttributeType.STRING},
+            sort_key={'name': 'epochtime', 'type': ddb.AttributeType.STRING}
         )
 
         # create Sns Topic
