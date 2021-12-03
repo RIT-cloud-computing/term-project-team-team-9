@@ -52,13 +52,13 @@ def lambda_handler(event, context):
             'Bucket': originS3,
             'Key': originKey
         }
-        s3.meta.client.copy(copy_source, 'rek-image-detect', originKey)
+        s3.meta.client.copy(copy_source, os.environ['DETECT_BUCKET'], originKey)
         
         s3client = boto3.client('s3')
         my_session = boto3.session.Session()
         my_region = my_session.region_name
     
-        url = "https://rek-image-detect.s3.{}.amazonaws.com/{}".format(my_region, originKey)
+        url = "https://{}.s3.{}.amazonaws.com/{}".format(os.environ['DETECT_BUCKET'], my_region, originKey)
     
         # Save to database (requires DB/intergration)
         
@@ -78,7 +78,7 @@ def lambda_handler(event, context):
         
         db = boto3.client('dynamodb')
         db.put_item(
-            TableName='jaywalker',
+            TableName=os.environ["DY_TABLE"],
             Item={
                 "submit": {
                     "S": "OK"
@@ -109,7 +109,7 @@ def lambda_handler(event, context):
         }
         
         snsLambda.invoke(
-            FunctionName = 'arn:aws:lambda:us-east-2:344385510112:function:sns-lambda',
+            FunctionName = os.environ['SNS_LAMBDA'],
             InvocationType = 'Event',
             Payload = json.dumps(inputParams)
         )

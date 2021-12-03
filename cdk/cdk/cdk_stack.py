@@ -84,7 +84,12 @@ class CdkStack(cdk.Stack):
             self, 'Test-detect',
             runtime = _lambda.Runtime.PYTHON_3_9,
             handler = 'test-detect.lambda_handler',
-            code = _lambda.Code.from_asset('cdk/detect')
+            code = _lambda.Code.from_asset('cdk/detect'),
+            environment = {
+                DETECT_BUCKET: bucket.bucketName,
+                DY_TABLE: table.tableName,
+                SNS_LAMBDA: sns_lambda.functionArn
+            }
         )
 
         # add permissions for SNS Lambda function
