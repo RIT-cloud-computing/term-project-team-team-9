@@ -60,7 +60,7 @@ class CdkStack(cdk.Stack):
         image_lambda = _lambda.Function(
             self, 'get-image',
             runtime = _lambda.Runtime.PYTHON_3_9,
-            handler = 'get-image.lambda_handler',
+            handler = 'get-image-lambda.lambda_handler',
             code = _lambda.Code.from_asset('cdk/get-image'),
             environment = {
                 "DY_TABLE": table.table_name

@@ -1,5 +1,6 @@
 import json
 import boto3
+import os
 import time;
 
 def lambda_handler(event, context):
@@ -80,7 +81,7 @@ def lambda_handler(event, context):
         db.put_item(
             TableName=os.environ["DY_TABLE"],
             Item={
-                "submit": {
+                "Submit": {
                     "S": "OK"
                 },
                 "epochtime": {
