@@ -50,7 +50,8 @@ class CdkStack(cdk.Stack):
         api = apigateway.RestApi(self, 'get-image-api',
             default_cors_preflight_options=apigateway.CorsOptions(
                 allow_origins=apigateway.Cors.ALL_ORIGINS,
-                allow_methods=["GET"]
+                allow_methods=["GET"],
+                allow_headers=apigateway.Cors.DEFAULT_HEADERS
             )
         )
         url = api.url + "/default/get-resource"
