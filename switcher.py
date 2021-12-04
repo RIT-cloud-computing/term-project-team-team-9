@@ -19,11 +19,11 @@ def main():
         for line in file:
             print(line.replace('rek-image-buffer', buffer_bucket), end='')
 
-    index = open('./index.html')
+    index = open('./index.html', encoding='utf-8')
 
     s3 = boto3.resource('s3')
     bucket = s3.Bucket(site_bucket)
-    bucket.put_object(Body=open('./index.html', encoding='utf-8'), Key='index.html', ContentType='text/html')
+    bucket.put_object(Body=index, Key='index.html', ContentType='text/html')
 
 
 if __name__ == "__main__":
