@@ -99,7 +99,7 @@ class CdkStack(cdk.Stack):
         detect_lambda = _lambda.Function(
             self, 'Test-detect',
             runtime = _lambda.Runtime.PYTHON_3_9,
-            handler = 'test-detect.lambda_handler',
+            handler = 'detect-lambda.lambda_handler',
             code = _lambda.Code.from_asset('cdk/detect'),
             environment = {
                 "DETECT_BUCKET": bucket.bucket_name,
