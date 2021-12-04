@@ -76,7 +76,7 @@ class CdkStack(cdk.Stack):
         resource.add_cors_preflight(
             allow_origins=['*'],
             allow_methods=['GET'],
-            allow_headers=Cors.DEFAUTL_HEADERS
+            allow_headers=apigateway.Cors.DEFAUTL_HEADERS
         )
 
         # create Sns Topic
