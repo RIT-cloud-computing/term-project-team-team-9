@@ -8,7 +8,7 @@ def lambda_handler(event, context):
 		TableName=os.environ["DY_TABLE"],
 		ProjectionExpression="Image,Jaywalkers,Walkers",
 		Limit=5,
-		KeyConditionExpression='submit=:val',
+		KeyConditionExpression='Submit=:val',
 		ExpressionAttributeValues={":val": {"S": "OK"}},
 		ScanIndexForward=False
 	)
