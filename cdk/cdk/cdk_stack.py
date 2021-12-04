@@ -32,7 +32,7 @@ class CdkStack(cdk.Stack):
 
         # create S3 bucket to hold images
         # give new user access to the bucket
-        bucket = s3.Bucket(self, 'rek-image-detect')
+        bucket = s3.Bucket(self, 'rek-image-detect', public_read_access=True)
         bucket.grant_read_write(user)
 
         # HTML bucket
