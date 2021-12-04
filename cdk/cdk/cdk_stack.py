@@ -73,10 +73,6 @@ class CdkStack(cdk.Stack):
 
         resource = api.root.add_resource("get-resource")
         resource.add_method("GET", apigateway.LambdaIntegration(image_lambda, proxy=False))
-        resource.add_cors_preflight(
-            allow_origins=['*'],
-            allow_methods=['GET']
-        )
 
         # create Sns Topic
         # npx cdk deploy my-stack-name    \
