@@ -72,10 +72,10 @@ class CdkStack(cdk.Stack):
         statement.add_resources("*")
         image_lambda.add_to_role_policy(statement)
 
-        resource = api.root.add_resource("get-resource", method_responses=[apigateway.MethodResponse(status_code="200")])
+        resource = api.root.add_resource("get-resource")
         resource.add_method("GET", apigateway.LambdaIntegration(image_lambda, proxy=False, integration_responses=[apigateway.IntegrationResponse(
-                status_code="200"
-            )]))
+                status_code="200")])
+                , method_responses=[apigateway.MethodResponse(status_code="200")])
 
         # create Sns Topic
         # npx cdk deploy my-stack-name    \
