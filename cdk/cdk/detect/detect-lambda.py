@@ -1,7 +1,12 @@
 import json
 import boto3
+<<<<<<< HEAD
 import os
 import time;
+=======
+import time
+import os
+>>>>>>> c48bcdf2b5f4ba023ee89391ebf36d7aa34d8890
 
 def lambda_handler(event, context):
     imageTime = time.time()
