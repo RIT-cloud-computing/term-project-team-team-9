@@ -19,7 +19,7 @@ def main():
         for line in file:
             print(line.replace('rek-image-buffer', buffer_bucket), end='')
 
-    index = open('./index.html', encoding='utf-8')
+    index = open('./index.html', 'rb', ncoding='utf-8')
 
     s3 = boto3.resource('s3')
     bucket = s3.Bucket(site_bucket)
