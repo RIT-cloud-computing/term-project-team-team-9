@@ -23,7 +23,7 @@ def main():
 
     s3 = boto3.resource('s3')
     bucket = s3.Bucket(site_bucket)
-    bucket.put_object(Body=open('./index.html'), Key='index.html', ContentType='text/html')
+    bucket.put_object(Body=open('./index.html', encoding='utf-8'), Key='index.html', ContentType='text/html')
 
 
 if __name__ == "__main__":
