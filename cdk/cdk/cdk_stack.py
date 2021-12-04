@@ -75,7 +75,7 @@ class CdkStack(cdk.Stack):
         resource = api.root.add_resource("get-resource")
         resource.add_method("GET", apigateway.LambdaIntegration(image_lambda, proxy=False, integration_responses=[apigateway.IntegrationResponse(
                 status_code="200"
-            )]))
+            )], method_responses=[apigateway.MethodResponse(status_code="200")]))
 
         # create Sns Topic
         # npx cdk deploy my-stack-name    \
