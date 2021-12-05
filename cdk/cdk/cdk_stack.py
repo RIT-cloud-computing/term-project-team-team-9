@@ -80,8 +80,7 @@ class CdkStack(cdk.Stack):
             "method.response.header._content-_type": True,
             "method.response.header._access-_control-_allow-_origin": True,
             "method.response.header._access-_control-_allow-_credentials": True
-        },
-        resonse_models={""})])
+        })])
 
         # create Sns Topic
         # npx cdk deploy my-stack-name    \
