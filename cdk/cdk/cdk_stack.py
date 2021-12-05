@@ -54,7 +54,7 @@ class CdkStack(cdk.Stack):
                 allow_headers=apigateway.Cors.DEFAULT_HEADERS
             )
         )
-        url = api.url + "/default/get-resource"
+        url = api.url + "/prod/get-resource"
 
         # create Lambda function for frontend
         image_lambda = _lambda.Function(
@@ -78,8 +78,7 @@ class CdkStack(cdk.Stack):
                 status_code="200", response_parameters={"method.response.header._access-_control-_allow-_origin": "'*'"})])
                 , method_responses=[apigateway.MethodResponse(status_code="200", response_parameters={
             "method.response.header._content-_type": True,
-            "method.response.header._access-_control-_allow-_origin": True,
-            "method.response.header._access-_control-_allow-_credentials": True
+            "method.response.header._access-_control-_allow-_origin": True
         })])
 
         # create Sns Topic
@@ -163,4 +162,4 @@ class CdkStack(cdk.Stack):
         # bucket.grant_read_write(detect_lambda)
         cdk.CfnOutput(self, "BufferBucket", value=temp_bucket.bucket_name)
         cdk.CfnOutput(self, "HTMLBucket", value=html_bucket.bucket_name)
-        cdk.CfnOutput(self, "API", value=api.url)
+        cdk.CfnOutput(self, "API", value=url)
