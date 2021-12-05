@@ -75,7 +75,11 @@ class CdkStack(cdk.Stack):
         resource = api.root.add_resource("get-resource")
         resource.add_method("GET", apigateway.LambdaIntegration(image_lambda, proxy=False, integration_responses=[apigateway.IntegrationResponse(
                 status_code="200")])
-                , method_responses=[apigateway.MethodResponse(status_code="200")])
+                , method_responses=[apigateway.MethodResponse(status_code="200", response_parameters={
+            "method.response.header._content-_type": True,
+            "method.response.header._access-_control-_allow-_origin": True,
+            "method.response.header._access-_control-_allow-_credentials": True
+        })])
 
         # create Sns Topic
         # npx cdk deploy my-stack-name    \
