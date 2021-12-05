@@ -54,8 +54,7 @@ class CdkStack(cdk.Stack):
                 allow_headers=apigateway.Cors.DEFAULT_HEADERS
             )
         )
-        url = api.url + "prod/get-resource"
-        print(url)
+        url = api.url + "get-resource"
 
         # create Lambda function for frontend
         image_lambda = _lambda.Function(

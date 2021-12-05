@@ -10,6 +10,7 @@ def main():
     buffer_bucket = cdkVars["CdkStack"]["BufferBucket"]
     site_bucket = cdkVars["CdkStack"]["HTMLBucket"]
     endpoint = cdkVars["CdkStack"]["API"]
+    print(endpoint)
     
     with fileinput.FileInput("./index.html", inplace=True, backup='.bak') as file:
         for line in file:
