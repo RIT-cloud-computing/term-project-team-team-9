@@ -55,6 +55,7 @@ class CdkStack(cdk.Stack):
             )
         )
         url = api.url + "/prod/get-resource"
+        print(url)
 
         # create Lambda function for frontend
         image_lambda = _lambda.Function(
