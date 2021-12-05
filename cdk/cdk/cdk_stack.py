@@ -72,9 +72,7 @@ class CdkStack(cdk.Stack):
         statement.add_resources("*")
         image_lambda.add_to_role_policy(statement)
 
-        resource = api.root.add_resource("get-resource", defaultCorsPreflightOptions={
-            "allowOrigins": "*"
-        })
+        resource = api.root.add_resource("get-resource")
         resource.add_method("GET", apigateway.LambdaIntegration(image_lambda, proxy=False, integration_responses=[apigateway.IntegrationResponse(
                 status_code="200", response_parameters={"method.response.header.Access-Control-Allow-Origin": "*"})])
                 , method_responses=[apigateway.MethodResponse(status_code="200", response_parameters={
